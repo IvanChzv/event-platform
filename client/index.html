@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Management Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Event Platform</span>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="#" onclick="showSection('home')">Главная</a>
+                <a href="#" onclick="showSection('events')">Мероприятия</a>
+                
+                <!-- Удален блок auth-links, теперь ссылки только в выпадающем меню -->
+                
+                <div class="auth-buttons" id="authButtons">
+                    <button class="btn btn-outline" onclick="showSection('login')">Вход</button>
+                    <button class="btn btn-primary" onclick="showSection('register')">Регистрация</button>
+                </div>
+                
+                <div class="user-menu" id="userMenu" style="display: none;">
+                    <div class="user-dropdown">
+                        <button class="user-dropdown-btn" onclick="toggleUserDropdown()">
+                            <i class="fas fa-user-circle"></i>
+                            <span id="userName"></span>
+                            <i class="fas fa-caret-down"></i>
+                            <span class="notification-badge" id="userNotificationBadge" style="display: none;"></span>
+                        </button>
+                        <div class="user-dropdown-content" id="userDropdownContent">
+                            <a href="#" onclick="showSection('profile')">
+                                <i class="fas fa-user"></i> Мой профиль
+                            </a>
+                            <a href="#" onclick="showSection('my-events')">
+                                <i class="fas fa-calendar-check"></i> Мои мероприятия
+                            </a>
+                            <a href="#" onclick="showSection('notifications')">
+                                <i class="fas fa-bell"></i> Уведомления
+                                <span class="notification-badge" id="dropdownNotificationBadge" style="display: none;"></span>
+                            </a>
+                            <a href="#" onclick="showSection('create-event')">
+                                <i class="fas fa-plus-circle"></i> Создать мероприятие
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" onclick="logout()" class="logout-btn">
+                                <i class="fas fa-sign-out-alt"></i> Выйти
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="nav-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Главная страница -->
+        <section id="home" class="section">
+            <div class="hero">
+                <h1>Организуйте и посещайте мероприятия</h1>
+                <p>Создавайте события, находите интересные мероприятия и общайтесь с единомышленниками</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary btn-lg" onclick="showSection('events')">
+                        <i class="fas fa-search"></i> Найти мероприятия
+                    </button>
+                    <button class="btn btn-outline btn-lg" onclick="showSection('create-event')">
+                        <i class="fas fa-plus"></i> Создать мероприятие
+                    </button>
+                </div>
+            </div>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <i class="fas fa-calendar-plus"></i>
+                    <h3>Создание событий</h3>
+                    <p>Легко создавайте мероприятия любой тематики</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Управление участниками</h3>
+                    <p>Контролируйте регистрацию и участников</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-bell"></i>
+                    <h3>Уведомления</h3>
+                    <p>Получайте уведомления о важных событиях</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-filter"></i>
+                    <h3>Фильтрация</h3>
+                    <p>Находите мероприятия по категориям и датам</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Страница регистрации -->
+        <section id="register" class="section" style="display: none;">
+            <div class="auth-card">
+                <h2>Регистрация</h2>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="regEmail">Email</label>
+                        <input type="email" id="regEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regUsername">Имя пользователя</label>
+                        <input type="text" id="regUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regFullName">Полное имя</label>
+                        <input type="text" id="regFullName">
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">Пароль</label>
+                        <input type="password" id="regPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regConfirmPassword">Подтвердите пароль</label>
+                        <input type="password" id="regConfirmPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button>
+                </form>
+                <p class="auth-switch">
+                    Уже есть аккаунт? <a href="#" onclick="showSection('login')">Войти</a>
+                </p>
+            </div>
+        </section>
+
+        <!-- Страница входа -->
+        <section id="login" class="section" style="display: none;">
+            <div class="auth-card">
+                <h2>Вход в систему</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Пароль</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Войти</button>
+                </form>
+                <p class="auth-switch">
+                    Нет аккаунта? <a href="#" onclick="showSection('register')">Зарегистрироваться</a>
+                </p>
+            </div>
+        </section>
+
+        <!-- Список мероприятий -->
+        <section id="events" class="section" style="display: none;">
+            <div class="section-header">
+                <h2>Все мероприятия</h2>
+                <button class="btn btn-primary" onclick="showSection('create-event')">
+                    <i class="fas fa-plus"></i> Создать мероприятие
+                </button>
+            </div>
+            
+            <div class="filters">
+                <input type="text" id="searchInput" placeholder="Поиск мероприятий..." 
+                       oninput="searchEvents()">
+                <select id="categoryFilter" onchange="filterEvents()">
+                    <option value="">Все категории</option>
+                    <option value="conference">Конференция</option>
+                    <option value="workshop">Воркшоп</option>
+                    <option value="seminar">Семинар</option>
+                    <option value="meetup">Митап</option>
+                    <option value="party">Вечеринка</option>
+                    <option value="sports">Спорт</option>
+                    <option value="other">Другое</option>
+                </select>
+                <input type="text" id="locationFilter" placeholder="Местоположение" 
+                       oninput="filterEvents()">
+                <input type="date" id="dateFromFilter" onchange="filterEvents()">
+                <input type="date" id="dateToFilter" onchange="filterEvents()">
+            </div>
+            
+            <div id="eventsList" class="events-grid">
+                <!-- Мероприятия будут загружены здесь -->
+            </div>
+            
+            <div class="pagination" id="pagination">
+                <!-- Пагинация будет здесь -->
+            </div>
+        </section>
+
+        <!-- Создание мероприятия -->
+        <section id="create-event" class="section" style="display: none;">
+            <div class="form-card">
+                <h2>Создание мероприятия</h2>
+                <form id="createEventForm">
+                    <div class="form-group">
+                        <label for="eventTitle">Название мероприятия *</label>
+                        <input type="text" id="eventTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventDescription">Описание</label>
+                        <textarea id="eventDescription" rows="4"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="eventCategory">Категория</label>
+                            <select id="eventCategory">
+                                <option value="conference">Конференция</option>
+                                <option value="workshop">Воркшоп</option>
+                                <option value="seminar">Семинар</option>
+                                <option value="meetup" selected>Митап</option>
+                                <option value="party">Вечеринка</option>
+                                <option value="sports">Спорт</option>
+                                <option value="other">Другое</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventLocation">Местоположение</label>
+                            <input type="text" id="eventLocation">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="eventStartDate">Дата начала *</label>
+                            <input type="datetime-local" id="eventStartDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventEndDate">Дата окончания</label>
+                            <input type="datetime-local" id="eventEndDate">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventMaxParticipants">Максимальное количество участников</label>
+                        <input type="number" id="eventMaxParticipants" min="1">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" onclick="showSection('events')">Отмена</button>
+                        <button type="submit" class="btn btn-primary">Создать мероприятие</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Мои мероприятия -->
+        <section id="my-events" class="section" style="display: none;">
+            <div class="section-header">
+                <h2>Мои мероприятия</h2>
+                <button class="btn btn-primary" onclick="showSection('create-event')">
+                    <i class="fas fa-plus"></i> Создать новое
+                </button>
+            </div>
+            
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showMyEventsTab('created')">Созданные мной</button>
+                <button class="tab-btn" onclick="showMyEventsTab('registered')">Зарегистрированные</button>
+            </div>
+            
+            <div id="myCreatedEvents" class="events-grid">
+                <!-- Созданные мероприятия будут здесь -->
+            </div>
+            
+            <div id="myRegisteredEvents" class="events-grid" style="display: none;">
+                <!-- Зарегистрированные мероприятия будут здесь -->
+            </div>
+        </section>
+
+        <!-- Уведомления -->
+        <section id="notifications" class="section" style="display: none;">
+            <div class="section-header">
+                <h2>Уведомления</h2>
+                <button class="btn btn-outline" onclick="markAllAsRead()" id="markAllReadBtn" style="display: none;">
+                    <i class="fas fa-check-double"></i> Отметить все как прочитанные
+                </button>
+            </div>
+            
+            <div id="notificationsList">
+                <!-- Уведомления будут здесь -->
+            </div>
+        </section>
+
+        <!-- Профиль пользователя -->
+        <section id="profile" class="section" style="display: none;">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h2>Профиль пользователя</h2>
+                    <p id="profileEmail"></p>
+                </div>
+                
+                <div class="profile-info" id="profileInfo">
+                    <!-- Информация будет загружена через JavaScript -->
+                </div>
+                
+                <div class="form-actions" style="margin-top: 2rem;">
+                    <button class="btn btn-outline" onclick="showSection('my-events')">
+                        <i class="fas fa-arrow-left"></i> Назад к мероприятиям
+                    </button>
+                    <button class="btn btn-primary" onclick="editProfile()">
+                        <i class="fas fa-edit"></i> Редактировать профиль
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Редактирование профиля -->
+        <section id="edit-profile" class="section" style="display: none;">
+            <div class="form-card">
+                <h2>Редактирование профиля</h2>
+                <form id="editProfileForm">
+                    <div class="form-group">
+                        <label for="editFullName">Полное имя</label>
+                        <input type="text" id="editFullName">
+                    </div>
+                    <div class="form-group">
+                        <label for="editEmail">Email</label>
+                        <input type="email" id="editEmail">
+                    </div>
+                    <div class="form-group">
+                        <label for="editUsername">Имя пользователя</label>
+                        <input type="text" id="editUsername">
+                    </div>
+                    <div class="form-group">
+                        <label for="editPassword">Новый пароль (оставьте пустым, если не хотите менять)</label>
+                        <input type="password" id="editPassword">
+                    </div>
+                    <div class="form-group">
+                        <label for="editConfirmPassword">Подтвердите новый пароль</label>
+                        <input type="password" id="editConfirmPassword">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" onclick="showSection('profile')">
+                            Отмена
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            Сохранить изменения
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>Event Management Platform &copy; 2024. Курсовая работа по микросервисной архитектуре.</p>
+    </footer>
+
+    <!-- Модальное окно для деталей мероприятия -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalBody">
+                <!-- Детали мероприятия будут здесь -->
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

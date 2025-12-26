@@ -1,46 +1,51 @@
-# Event Management Platform - Микросервисная архитектура
 
-## Описание проекта
+1. Веб-клиент: http://localhost:8080
 
-Курсовая работа по созданию микросервисного веб-приложения для организации мероприятий. Приложение состоит из трех независимых сервисов, взаимодействующих через REST API.
+2. API документация (Swagger):
 
-## Архитектура
+Auth Service: http://localhost:8000/docs
 
-Приложение состоит из следующих микросервисов:
+Event Service: http://localhost:8001/docs
 
-1. **Auth Service** (порт 8000) - управление пользователями и аутентификация
-   - Регистрация и вход пользователей
-   - JWT токены для аутентификации
-   - Управление пользователями
+Notification Service: http://localhost:8002/docs
 
-2. **Event Service** (порт 8001) - управление мероприятиями
-   - Создание, чтение, обновление, удаление мероприятий
-   - Регистрация на мероприятия
-   - Фильтрация и поиск мероприятий
-   - Управление участниками
+3. Health checks:
 
-3. **Notification Service** (порт 8002) - уведомления
-   - Отправка уведомлений пользователям
-   - Email уведомления
-   - Хранение истории уведомлений
+Auth Service: http://localhost:8000/health
 
-## Технологии
+Event Service: http://localhost:8001/health
 
-- **Backend:** Python, FastAPI, SQLAlchemy, JWT
-- **Database:** PostgreSQL (отдельная БД для каждого сервиса)
-- **Frontend:** HTML, CSS, JavaScript (чистый)
-- **Containerization:** Docker, Docker Compose
-- **API Communication:** REST, HTTP
+Notification Service: http://localhost:8002/health
 
-## Быстрый запуск
+4. База данных:
 
-### Требования
-- Docker и Docker Compose
-- Git
+pgAdmin: http://localhost:5050
 
-### Установка и запуск
+Email: admin@admin.com
 
-1. Клонировать репозиторий:
-```bash
-git clone <repository-url>
-cd event-management-platform
+Password: admin
+
+Host name/address: postgres
+
+Port: 5432
+
+Database: postgres
+
+Username: postgres
+
+Password: ZZZivanchzv2002
+
+5. Запуск:
+
+docker-compose up --build
+
+6. Остановка:
+
+docker-compose down 
+
+7. Очистка кэша:
+
+docker volume prune -f   
+docker system prune -a -f
+
+

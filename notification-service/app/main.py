@@ -58,7 +58,6 @@ async def create_notification(
     try:
         db_notification = crud.create_notification(db=db, notification=notification)
         
-        # Отправка email уведомления (асинхронно)
         if notification.notification_type in ["event_created", "event_registration"]:
             await send_email_notification(db_notification)
         

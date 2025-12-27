@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from sqlalchemy import text  # Добавьте этот импорт
+from sqlalchemy import text
 from datetime import timedelta
 import logging
 import time
@@ -190,7 +190,7 @@ def health_check():
     try:
         # Проверяем подключение к БД с использованием text()
         db = database.SessionLocal()
-        db.execute(text("SELECT 1"))  # Используем text()
+        db.execute(text("SELECT 1")) 
         db.close()
         return {
             "status": "healthy",

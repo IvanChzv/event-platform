@@ -295,10 +295,10 @@ function renderPagination(currentPage) {
     const pagination = document.getElementById('pagination');
     pagination.innerHTML = '';
     
-    // В реальном приложении здесь бы было общее количество страниц из API
-    const totalPages = Math.ceil(100 / eventsPerPage); // Примерное значение
+
+    const totalPages = Math.ceil(100 / eventsPerPage); 
     
-    for (let i = 1; i <= Math.min(totalPages, 5); i++) {
+    for (let i = 1; i <= Math.min(totalPages, 3); i++) {
         const button = document.createElement('button');
         button.className = `page-btn ${i === currentPage ? 'active' : ''}`;
         button.textContent = i;

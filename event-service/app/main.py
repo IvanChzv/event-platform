@@ -67,7 +67,6 @@ def create_event(
             "message": f"Вы создали мероприятие '{event.title}'"
         }
         
-        # Асинхронная отправка уведомления
         try:
             requests.post(
                 "http://notification-service:8000/notifications/",
@@ -166,21 +165,17 @@ def register_for_event(
     if db_event is None:
         raise HTTPException(status_code=404, detail="Event not found")
     
-    # Проверка, не зарегистрирован ли уже пользователь
     existing_registration = crud.get_registration(db, event_id, current_user["user_id"])
     if existing_registration:
         raise HTTPException(status_code=400, detail="Already registered for this event")
     
-    # Проверка максимального количества участников
     if db_event.max_participants and db_event.current_participants >= db_event.max_participants:
         raise HTTPException(status_code=400, detail="Event is full")
     
     registration = crud.create_registration(db, event_id, current_user["user_id"])
     
-    # Обновление счетчика участников
     crud.update_event_participants(db, event_id, increment=True)
     
-    # Отправка уведомления о регистрации
     notification_data = {
         "user_id": current_user["user_id"],
         "event_id": event_id,
@@ -212,7 +207,6 @@ def unregister_from_event(
     
     crud.delete_registration(db, registration.id)
     
-    # Обновление счетчика участников
     crud.update_event_participants(db, event_id, increment=False)
     
     return {"message": "Successfully unregistered from the event"}

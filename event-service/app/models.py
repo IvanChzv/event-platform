@@ -23,7 +23,7 @@ class Event(Base):
     location = Column(String)
     start_date = Column(DateTime(timezone=True), nullable=False)
     end_date = Column(DateTime(timezone=True))
-    organizer_id = Column(Integer, nullable=False)  # ID из auth-service
+    organizer_id = Column(Integer, nullable=False)
     max_participants = Column(Integer)
     current_participants = Column(Integer, default=0)
     is_published = Column(Boolean, default=True)
@@ -35,7 +35,7 @@ class Registration(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     event_id = Column(Integer, ForeignKey("events.id"), nullable=False)
-    user_id = Column(Integer, nullable=False)  # ID из auth-service
+    user_id = Column(Integer, nullable=False)
     registered_at = Column(DateTime(timezone=True), server_default=func.now())
     status = Column(String, default="confirmed")
     

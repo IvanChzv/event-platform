@@ -20,7 +20,6 @@ async def send_email_notification(
 ):
     """Отправка email уведомления"""
     
-    # В реальном приложении здесь бы запрашивался email пользователя из auth-service
     if not recipient_email:
         recipient_email = f"user{notification.user_id}@example.com"
     
@@ -30,7 +29,6 @@ async def send_email_notification(
     message["From"] = EMAIL_FROM
     message["To"] = recipient_email
     
-    # Текст сообщения
     text = f"""
     Уведомление от Event Management Platform
     
@@ -43,7 +41,6 @@ async def send_email_notification(
     Это автоматическое сообщение, пожалуйста, не отвечайте на него.
     """
     
-    # HTML версия
     html = f"""
     <html>
       <body>
@@ -57,14 +54,12 @@ async def send_email_notification(
     </html>
     """
     
-    # Добавляем части сообщения
     part1 = MIMEText(text, "plain")
     part2 = MIMEText(html, "html")
     message.attach(part1)
     message.attach(part2)
     
     try:
-        # Отправка email
         await aiosmtplib.send(
             message,
             hostname=EMAIL_HOST,
